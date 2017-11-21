@@ -118,7 +118,9 @@ if (!empty($massDelete->notes)) {
             $('#custom_records_dialog').dialog({ bgiframe: true, title: 'Enter Custom Record List',
                 modal: true, width: 650,
                 buttons: {
-                    'Close': function() {  },
+                    'Close': function() {
+                    	$(this).dialog('close');
+                    },
                     'Apply': function() {
                         // Parse out contents
                         var list = $('#custom_records_dialog textarea').val();
