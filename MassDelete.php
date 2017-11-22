@@ -7,7 +7,8 @@ class MassDelete extends \ExternalModules\AbstractExternalModule
 	public $project_id;
 
 	public $records;
-	public $record_checkboxes = array();	// Array to hold checkboxes for display
+	public $record_html;					// Holds checkbox HTML for display
+	public $add_missing_inputs = false;
 
 	public $errors = array();
 	public $notes = array();
@@ -105,6 +106,13 @@ class MassDelete extends \ExternalModules\AbstractExternalModule
 			$this->records = \Records::getRecordList($Proj->project_id, $this->group_id);
 		}
 
+		if(count($this->records) > 5000){
+			$this->max_length = 0;
+			$this->record_html = "There are too many records to display here.  Please use the <b>Custom List</b> button to manually add the desired record ids.";
+			$this->add_missing_inputs = true;
+			return;
+		}
+
 		// Obtain custom record label & secondary unique field labels for ALL records.
 		$extra_record_labels = \Records::getCustomRecordLabelsSecondaryFieldAllRecords($this->records, true, $this->arm_id);
 
@@ -123,8 +131,8 @@ class MassDelete extends \ExternalModules\AbstractExternalModule
 		$max_length = $max_length + 3; // add space for checkbox
 
 		$this->max_length = $max_length;
-		$this->record_checkboxes = $cbx_array;
 
+		$this->record_html = "<ul><li>" . implode("</li><li>", $cbx_array) . "</li></ul>";
 	}
 
 	public function handlePost() {

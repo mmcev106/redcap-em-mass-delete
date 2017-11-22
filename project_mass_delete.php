@@ -38,7 +38,7 @@ if (!empty($massDelete->notes)) {
                 </div>
                 <div class="panel-body">
                     <div class="wrapper">
-                        <ul><li><?php print implode("</li><li>",$massDelete->record_checkboxes) ?></li></ul>
+						<?php print $massDelete->record_html ?>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -73,7 +73,7 @@ if (!empty($massDelete->notes)) {
         $('#delete').click( function() {
             var num_selected = $('input[name="records[]"]:checked').length;
             if (num_selected == 0) {
-                simpleDialog('<b>You must first at least one record</b>');
+                simpleDialog('<b>You must first select at least one record.</b>');
                 return false;
             }
 
@@ -110,6 +110,16 @@ if (!empty($massDelete->notes)) {
             return false;
         });
 
+        var addInput = function(recordId){
+            var wrapper = $('form.delete_records .panel-body .wrapper');
+            if(wrapper.find('input').length == 0){
+                // Clear the the message about having too many records to display them.
+                wrapper.html('<ul></ul>');
+            }
+
+            var ul = wrapper.find('ul');
+            ul.append('<li style="width: auto; margin-right: 20px"><input type="checkbox" name="records[]" value="' + recordId + '" checked> ' + recordId + '</li>');
+        }
 
         $('span.customList').click( function() {
             // Open up a pop-up with a list
@@ -135,6 +145,9 @@ if (!empty($massDelete->notes)) {
                             var record = $('input[value="' + e + '"]');
                             if (record.length) {
                                 record.prop('checked',true);
+                                countChecked++;
+                            } else if (<?=json_encode($massDelete->add_missing_inputs)?>) {
+                                addInput(e);
                                 countChecked++;
                             } else {
                                 // Not found
