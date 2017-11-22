@@ -123,7 +123,7 @@ if (!empty($massDelete->notes)) {
 
         $('span.customList').click( function() {
             // Open up a pop-up with a list
-            var data = "<p>Enter a comma-separated or return-separated list of record ids to select</p><textarea class='cr' name='custom_records' placeholder='Enter a comma-separated list of record_ids'></textarea>";
+            var data = "<p>Enter a comma-separated or return-separated list of record ids to select</p><textarea class='cr' name='custom_records' placeholder='Enter a comma-separated or return-separated list of record_ids'></textarea>";
             initDialog("custom_records_dialog", data);
             $('#custom_records_dialog').dialog({ bgiframe: true, title: 'Enter Custom Record List',
                 modal: true, width: 650,
